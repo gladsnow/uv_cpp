@@ -1,0 +1,7 @@
+#ifndef UVCPP_WORK_THREAD_POOL_H_
+#define UVCPP_WORK_THREAD_POOL_H_
+
+
+
+
+#endif	//UVCPP_WORK_THREAD_POOL_H_
