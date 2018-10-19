@@ -1,23 +1,25 @@
 #ifndef UVCPP_TCP_CALLBACK_H_
 #define UVCPP_TCP_CALLBACK_H_
 
+#include "tcp_connection.h"
+
 class TcpCallback
 {
 public:
 	TcpCallback(){};
 	virtual ~TcpCallback(){};
 
-	virtual void OnConnect(int status){};
-	virtual void OnClose(){};
-	virtual void OnRead(const char* buf,int n_read){};
-	virtual void OnAccept(int status){};
-	virtual void OnAllocBuffer(int& suggested_size, char **buf)
-	{
-		static char default_buffer[1024];
-		suggested_size = 1024;
-		*buf = default_buffer;
-	};
+	//Common Callbacks
+	virtual void OnRead(const TcpConnectionPtr& handle, const char* buf, ssize_t nread) {};
 
+	//Callbacks for a client
+	virtual void OnConnected(const TcpConnectionPtr& handle, int status){};
+	virtual void OnClose(){};
+	
+
+	//Callbacks for a server
+	virtual void OnAccept(const TcpConnectionPtr& handle, int status) {};
+	virtual void OnClose(const TcpConnectionPtr& handle) {};
 };
 
 

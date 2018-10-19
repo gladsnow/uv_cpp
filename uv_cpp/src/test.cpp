@@ -1,62 +1,44 @@
-//#include <iostream>
-//#include<functional>
-//using namespace std;
-//
-//
-//class A
-//{
-//public:
-//typedef	std::function <void (int&)> Fun1;
-//
-//	A() {};
-//	~A() {};
-//	void setFun1Callback(const Fun1& cb)
-//	{
-//		fun1_callback_ = cb;
-//	};
-//
-//	void print(void)
-//	{
-//		int a = 20;
-//		fun1_callback_(a);
-//	};
-//
-//private:
-//	Fun1 fun1_callback_;
-//
-//};
-//
-//class B
-//{
-//public:
-//	B() {
-//		sum_add = 10;
-//		a_.setFun1Callback(std::bind(&B::sum, this, std::placeholders::_1));
-//	};
-//	~B() {};
-//
-//	void display(void)
-//	{
-//		a_.print();
-//	}
-//
-//	void sum(int& b) 
-//	{
-//		cout << "sum:" << b << endl;
-//	}
-//
-//
-//
-//private:
-//	A a_;
-//	int sum_add;
-//};
-//
-//int main()
-//{
-//	B b;
-//	b.display();
-//
-//	return 0;
-//}
-//
+#include <iostream>
+#include"tcp_server.h"
+#include "tcp_connection.h"
+#include "tcp_callback.h"
+
+class MyServer: public TcpCallback
+{
+public:
+	MyServer(){};
+	~MyServer() {};
+
+	void OnAccept(const TcpConnectionPtr& conn, int status) 
+	{ 
+		std::cout << "OnAccept():" << status << std::endl;
+	};
+	void OnRead(const TcpConnectionPtr& conn , const char* buf, ssize_t nread)
+	{
+		if (nread > 0)
+		{
+			std::cout << "message:" << buf << std::endl;
+		}
+		delete buf;
+	};
+	void OnClose(const TcpConnectionPtr& handle) {
+		std::cout << "OnClose()" << std::endl;
+	};
+
+};
+
+int main()
+{
+	MyServer* my_callback = new MyServer();
+	TcpServer server(my_callback);
+	server.InitServer("127.0.0.1", 9800);
+	server.StartServer();
+	while (getchar() != 'q')
+	{
+		std::cout << "wait.."<<std::endl;
+		Sleep(1000);
+	}
+	server.StopServer();
+	return 0;
+}
+

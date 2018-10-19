@@ -4,15 +4,16 @@
 #include<set>
 #include "uv.h"
 #include "tcp_connection.h"
-#include "callbacks.h"
+#include "tcp_callback.h"
+
 class TcpServer
 {
 public:
-	TcpServer(TcpCallback* tcp_cb);
+	TcpServer(TcpCallback* callback_handle);
 	~TcpServer();
 
 public:
-	int InitServer(const char* ip,int port);
+	int InitServer(const std::string& ip,int port);
 	int StartServer();
 	static void ConnectionCB(uv_stream_t* server, int status);
 	void DoConnection(uv_stream_t* server, int status);
@@ -20,23 +21,16 @@ public:
 
 	static void LoopThread(void* arg);
 
-	void setConnectionCallback(const ConnectionCallback& cb);
-	void setCloseConnCallback(const CloseConnCallback& cb);
-
-
+	void RemoveConnectionHandle(const TcpConnectionPtr& conn);
 
 public:
-typedef std::set<TcpConnectionSmartPtr> TcpConnectionSet;
+typedef std::set<TcpConnectionPtr> TcpConnectionSet;
 	uv_tcp_t server_handle_;
 	uv_loop_t* loop_;
-	TcpConnectionSet connections_set_;
-	TcpCallback* tcp_callback_;
+	TcpConnectionSet connection_handles_set_;
 	uv_thread_t thread_id_;
 	BOOL is_init_;
-	//ConnectionCallback connection_callback_;
-	//CloseConnCallback close_conn_callback_;
+	TcpCallback* tcp_callback_handle_;
 };
-
-
 
 #endif //UVCPP_TCP_SERVER_H_

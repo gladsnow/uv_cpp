@@ -2,8 +2,9 @@
 #define UVCPP_TCP_CONNECTION_H_
 
 #include <memory>
+#include <functional>
 #include "uv.h"
-#include "tcp_callback.h"
+#include "callbacks.h"
 
 typedef struct thread_para
 {
@@ -12,11 +13,13 @@ typedef struct thread_para
 	uv_buf_t* buf;
 }thread_para_;
 
+
+class TcpCallback;
+
 class TcpConnection :public std::enable_shared_from_this<TcpConnection>
 {
 public:
-	TcpConnection();
-	TcpConnection(uv_stream_t* connection_handle,TcpCallback* callback_hanle);
+	TcpConnection(TcpCallback* callback_handle);
 	~TcpConnection();
 
 	int ReadStart(uv_stream_t* server);
@@ -30,7 +33,7 @@ public:
 	static void ReadCallback(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf);
 	void DoRead(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf);
 
-	void DoAcceptWork(uv_work_t* Accept_);
+	//void DoAcceptWork(uv_work_t* Accept_);
 
 	static void CloseCallback(uv_handle_t* handle);
 	void DoClose(uv_handle_t* handle);
@@ -38,13 +41,13 @@ public:
 	static void ConnectCallback(uv_connect_t* req, int status);
 	void DoConnect(uv_connect_t* req, int status);
 
+	void SetCloseClientCB(const CloseClientCallback& cb);
+
 private:
 	uv_tcp_t connection_handle_;
 	uv_work_t* work_request_;
+	uv_stream_t* server_client_handle_;
 	TcpCallback* callback_handle_;
-	uv_stream_t* server_client_handle;
+	CloseClientCallback close_client_cb_;
 };
-
-typedef std::shared_ptr<TcpConnection> TcpConnectionSmartPtr;
-
 #endif //UVCPP_TCP_CONNECTION_H_

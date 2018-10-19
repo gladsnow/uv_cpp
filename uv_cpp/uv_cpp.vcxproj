@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\handle.cpp" />
+    <ClCompile Include="src\MemoryPool.cpp" />
     <ClCompile Include="src\tcp_client.cpp" />
     <ClCompile Include="src\tcp_connection.cpp" />
     <ClCompile Include="src\tcp_server.cpp" />
@@ -134,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="src\callbacks.h" />
     <ClInclude Include="src\handle.h" />
+    <ClInclude Include="src\MemoryPool.h" />
     <ClInclude Include="src\task.h" />
     <ClInclude Include="src\tcp_callback.h" />
     <ClInclude Include="src\tcp_client.h" />
@@ -143,7 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\maincpp_bak" />
-    <None Include="src\maincpp_bakup" />
+    <None Include="src\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

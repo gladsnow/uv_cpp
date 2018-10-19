@@ -2,9 +2,10 @@
 #define UVCPP_CALLBACKS_H_
 
 #include <functional>
+#include "tcp_connection.h"
 
-typedef std::function<void (void)> ConnectionCallback;
-typedef std::function<void (int)> CloseConnCallback;
-
+class TcpConnection;
+typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
+typedef std::function<void(const TcpConnectionPtr&)> CloseClientCallback;
 
 #endif	//UVCPP_CALLBACK_H_

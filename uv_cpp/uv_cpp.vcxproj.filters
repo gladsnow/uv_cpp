@@ -33,6 +33,9 @@
     <ClCompile Include="src\test.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\MemoryPool.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\handle.h">
@@ -59,12 +62,15 @@
     <ClInclude Include="src\callbacks.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\MemoryPool.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\maincpp_bak">
       <Filter>src</Filter>
     </None>
-    <None Include="src\maincpp_bakup">
+    <None Include="src\main.cpp">
       <Filter>src</Filter>
     </None>
   </ItemGroup>
