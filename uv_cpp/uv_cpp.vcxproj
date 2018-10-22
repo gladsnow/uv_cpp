@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Connector.cpp" />
     <ClCompile Include="src\handle.cpp" />
     <ClCompile Include="src\MemoryPool.cpp" />
     <ClCompile Include="src\tcp_client.cpp" />
@@ -133,11 +134,12 @@
     <ClCompile Include="src\work_thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Connector.h" />
     <ClInclude Include="src\callbacks.h" />
     <ClInclude Include="src\handle.h" />
     <ClInclude Include="src\MemoryPool.h" />
     <ClInclude Include="src\task.h" />
-    <ClInclude Include="src\tcp_callback.h" />
+    <ClInclude Include="src\tcp_callbacks.h" />
     <ClInclude Include="src\tcp_client.h" />
     <ClInclude Include="src\tcp_connection.h" />
     <ClInclude Include="src\tcp_server.h" />

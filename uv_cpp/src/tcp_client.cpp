@@ -3,8 +3,7 @@
 
 TcpClient::TcpClient(TcpCallback* tcp_cb)
 {
-	loop_ = NULL;
-	connect_req_.data = tcp_connection_;
+	loop_ = uv_default_loop();
 	tcp_callback_ = tcp_cb;
 	tcp_connection_ = NULL;
 }
@@ -13,28 +12,47 @@ TcpClient::~TcpClient()
 
 }
 
-void TcpClient::InitClient(const char* ip,int port)
+int TcpClient::InitClient(const char* ip,int port)
 {
-	struct sockaddr_in addr;
-	
-	loop_ = uv_default_loop();
+	if (!tcp_callback_)
+	{
+		return -1;
+	}
+	TcpConnectionPtr tcp_conn(new TcpConnection(tcp_callback_));
+	tcp_connection_ = tcp_conn;
 	uv_ip4_addr(ip, port, &addr);
-
-	uv_tcp_init(loop_,&client_handle_);
-	//tcp_connection_ = new TcpConnection();
-	//connect_req_.data = tcp_connection_;
-	//tcp_connection_->Connect(&connect_req_,&client_handle_,(const struct sockaddr*)&addr);
+	tcp_conn->Connect(connect_req_, (const struct sockaddr*)&addr);
+	return 0;
 }
 
-void TcpClient::StartClient()
+int TcpClient::StartClient()
 {
+	//assert(ret == 0);
 	int ret = -1;
-	assert(loop_ != NULL);
-	
-	ret = uv_run(loop_,UV_RUN_DEFAULT);
-	assert(ret == 0);
+	ret = uv_thread_create(&thread_id_, &LoopThread, uv_default_loop());
+	return ret;
 }
 
+void TcpClient::StopClient()
+{
+	//tcp_connection_->Close();
+	if (uv_loop_alive(loop_))
+	{
+		uv_stop(loop_);
+	}
+	uv_thread_join(&thread_id_);
+	uv_loop_close(loop_);
+	if (loop_)
+	{
+		loop_ = NULL;
+	}
+}
+
+void TcpClient::LoopThread(void* arg)
+{
+	uv_loop_t * uv_loop = (uv_loop_t *)arg;
+	uv_run(uv_loop, UV_RUN_DEFAULT);
+}
 
 
 

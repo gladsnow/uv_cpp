@@ -2,7 +2,7 @@
 #define UVCPP_TCP_CLIENT_H_
 
 #include "uv.h"
-#include "tcp_callback.h"
+#include "tcp_callbacks.h"
 #include "tcp_connection.h"
 
 class TcpClient
@@ -12,17 +12,21 @@ public:
 	~TcpClient();
 
 public:
-	void InitClient(const char* ip,int port);
-	void StartClient();
-	static void ConnectCallback(uv_connect_t* req, int status);
-	void DoConnect(uv_connect_t* req, int status);
+	int InitClient(const char* ip,int port);
+	int StartClient();
+	void StopClient();
 
 private:
-	uv_tcp_t client_handle_;
-	uv_connect_t connect_req_;
+	static void LoopThread(void* arg);
+
+private:
 	uv_loop_t* loop_;
 	TcpCallback* tcp_callback_;
-	TcpConnection* tcp_connection_;
+	TcpConnectionPtr tcp_connection_;
+	uv_thread_t thread_id_;
+	uv_tcp_t client_handle_;
+	uv_connect_t connect_req_;
+	struct sockaddr_in addr;
 };
 
 

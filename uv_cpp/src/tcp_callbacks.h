@@ -10,10 +10,13 @@ public:
 	virtual ~TcpCallback(){};
 
 	//Common Callbacks
+	virtual void OnAllocBuffer(const TcpConnectionPtr& handle, size_t& suggested_size, char **buf)  = 0;
 	virtual void OnRead(const TcpConnectionPtr& handle, const char* buf, ssize_t nread) {};
+	virtual void OnSend(const TcpConnectionPtr& handle, int status) {};
 
 	//Callbacks for a client
-	virtual void OnConnected(const TcpConnectionPtr& handle, int status){};
+	virtual void OnConnectedSuccess(const TcpConnectionPtr& handle, int status){};
+	virtual void OnConnectedFailed(const TcpConnectionPtr& handle, int status) {};
 	virtual void OnClose(){};
 	
 
