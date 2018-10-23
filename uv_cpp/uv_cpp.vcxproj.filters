@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\handle.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\tcp_client.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -27,26 +24,11 @@
     <ClCompile Include="src\tcp_server.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\work_thread_pool.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\test.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MemoryPool.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="Connector.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\handle.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\task.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\tcp_client.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -56,28 +38,11 @@
     <ClInclude Include="src\tcp_server.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\work_thread_pool.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\callbacks.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MemoryPool.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\tcp_callbacks.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Connector.h">
-      <Filter>include</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\maincpp_bak">
-      <Filter>src</Filter>
-    </None>
-    <None Include="src\main.cpp">
-      <Filter>src</Filter>
-    </None>
   </ItemGroup>
 </Project>

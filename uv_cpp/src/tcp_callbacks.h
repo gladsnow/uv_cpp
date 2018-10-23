@@ -18,8 +18,8 @@ public:
 	virtual void OnConnectedSuccess(const TcpConnectionPtr& handle, int status){};
 	virtual void OnConnectedFailed(const TcpConnectionPtr& handle, int status) {};
 	virtual void OnClose(){};
+	virtual void OnReconnect() {};
 	
-
 	//Callbacks for a server
 	virtual void OnAccept(const TcpConnectionPtr& handle, int status) {};
 	virtual void OnClose(const TcpConnectionPtr& handle) {};

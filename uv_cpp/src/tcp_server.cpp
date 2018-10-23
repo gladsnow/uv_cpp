@@ -57,7 +57,7 @@ void TcpServer::StopServer(void)
 		return;
 	}
 
-	uv_close((uv_handle_t*)&server_handle_,NULL);
+	//uv_close((uv_handle_t*)&server_handle_,NULL);
 	if(uv_loop_alive(loop_))
 	{
 		uv_stop(loop_);
@@ -85,11 +85,10 @@ void TcpServer::DoConnection(uv_stream_t* server, int status)
 	connection_handles_set_.insert(conn);
 	conn->SetCloseClientCB(std::bind(&TcpServer::RemoveConnectionHandle, this, std::placeholders::_1));
 	conn->Accept(server,status);
-
 }
 
 void  TcpServer::RemoveConnectionHandle(const TcpConnectionPtr& conn)
 {
-	std::cout << "TcpServer::RemoveConnectionHandle" << std::endl;
+	//std::cout << "TcpServer::RemoveConnectionHandle" << std::endl;
 	connection_handles_set_.erase(conn);
 }

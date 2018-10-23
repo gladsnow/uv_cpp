@@ -10,6 +10,13 @@ TcpConnection::TcpConnection(TcpCallback* callback_handle)
 	work_request_ = new uv_work_t;
 	callback_handle_ = callback_handle;
 	write_req_.data = this;
+	reconnect_flag_ = FALSE;
+	timer_handle_.data = this;
+	timer_timeout_ = 1000;
+	timer_repeat_ = 5000;
+	conn_req_ = NULL;
+	be_connected_ = TRUE;
+	is_reconnecting_ = FALSE;
 }
 
 TcpConnection::~TcpConnection()
@@ -89,18 +96,33 @@ void TcpConnection::DoRead(uv_stream_t* stream, ssize_t nread, const uv_buf_t* b
 	else if (nread < 0)
 	{
 		std::cout << "nread=" << nread << std::endl;
-		CloseSocket((uv_handle_t*)&connection_handle_, CloseCallback);
+		if (!reconnect_flag_)
+		{
+			CloseSocket((uv_handle_t*)&connection_handle_, CloseCallback);
+		}
+		else
+		{
+			callback_handle_->OnReconnect();
+			be_connected_ = FALSE;
+			if (!is_reconnecting_)
+			{
+				is_reconnecting_ = TRUE;
+				StartReconnTimer();
+			}
+		}
+		
 	}
 }
 
 void TcpConnection::CloseSocket(uv_handle_t* handle, uv_close_cb close_cb)
 {
+	be_connected_ = FALSE;
 	uv_close(handle, close_cb);
-	callback_handle_->OnClose(shared_from_this());
 }
 
 void TcpConnection::CloseCallback(uv_handle_t* handle)
 {
+
 	TcpConnection* ptr_this = (TcpConnection*)(handle->data);
 	if(ptr_this)
 	{
@@ -110,9 +132,15 @@ void TcpConnection::CloseCallback(uv_handle_t* handle)
 
 void TcpConnection::DoClose(uv_handle_t* handle)
 {
+	
 	if (close_client_cb_)
 	{
+		callback_handle_->OnClose(shared_from_this());
 		close_client_cb_(shared_from_this());
+	}
+	else
+	{
+		callback_handle_->OnClose();
 	}
 }
 
@@ -121,11 +149,13 @@ void TcpConnection::Close(void)
 	CloseSocket((uv_handle_t*)&connection_handle_, CloseCallback);
 }
 
-void TcpConnection::Connect(uv_connect_t& req,const struct sockaddr* addr)
+void TcpConnection::Connect(uv_connect_t& req,const struct sockaddr* addr,BOOL reconnect_flag)
 {
 	req.data = this;
+	reconnect_flag_ = reconnect_flag;
+	conn_req_ = &req;
+	socket_addr_ = (struct sockaddr*) addr;
 	uv_tcp_connect(&req, &connection_handle_,addr, AfterConnectCB);
-	
 }
 
 void TcpConnection::AfterConnectCB(uv_connect_t* req, int status)
@@ -142,15 +172,16 @@ void TcpConnection::DoAfterConnect(uv_connect_t* req, int status)
 {
 	if (callback_handle_)
 	{
-		
 		if (status == 0)
 		{
 			callback_handle_->OnConnectedSuccess(shared_from_this(), status);
+			be_connected_ = TRUE;
 			ReadStart((uv_stream_t*)&connection_handle_);
 		}
 		else
 		{
 			callback_handle_->OnConnectedFailed(shared_from_this(), status);
+			be_connected_ = FALSE;
 		}
 	}
 }
@@ -183,4 +214,39 @@ void TcpConnection::DoAfterWrite(uv_write_t* req, int status)
 void TcpConnection::SetCloseClientCB(const CloseClientCallback& cb)
 {
 	close_client_cb_ = cb;
+}
+
+BOOL TcpConnection::StartReconnTimer(void)
+{
+	uv_timer_init(uv_default_loop(), &timer_handle_);
+	return uv_timer_start(&timer_handle_, AfterTimerReconnCB, timer_timeout_, timer_repeat_);
+}
+
+BOOL TcpConnection::StopReconnTimer(void)
+{
+	return uv_timer_stop(&timer_handle_) == 0;
+}
+
+void TcpConnection::AfterTimerReconnCB(uv_timer_t* handle)
+{
+	TcpConnection* ptr_this =(TcpConnection* )handle->data;
+	if (ptr_this)
+	{
+		ptr_this->DoTimerReconnCB(handle);
+	}
+}
+
+void TcpConnection::DoTimerReconnCB(uv_timer_t* handle)
+{
+	if (!be_connected_ && is_reconnecting_)
+	{
+		std::cout << "reconnect...." << std::endl;
+		uv_tcp_init(uv_default_loop(), &connection_handle_);
+		uv_tcp_connect(conn_req_, &connection_handle_, socket_addr_, AfterConnectCB);
+	}
+	else
+	{
+		is_reconnecting_ = FALSE;
+		StopReconnTimer();
+	}
 }

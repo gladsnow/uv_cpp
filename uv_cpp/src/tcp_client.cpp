@@ -21,7 +21,7 @@ int TcpClient::InitClient(const char* ip,int port)
 	TcpConnectionPtr tcp_conn(new TcpConnection(tcp_callback_));
 	tcp_connection_ = tcp_conn;
 	uv_ip4_addr(ip, port, &addr);
-	tcp_conn->Connect(connect_req_, (const struct sockaddr*)&addr);
+	tcp_conn->Connect(connect_req_, (const struct sockaddr*)&addr,TRUE);
 	return 0;
 }
 

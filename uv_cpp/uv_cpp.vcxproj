@@ -124,30 +124,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Connector.cpp" />
-    <ClCompile Include="src\handle.cpp" />
-    <ClCompile Include="src\MemoryPool.cpp" />
     <ClCompile Include="src\tcp_client.cpp" />
     <ClCompile Include="src\tcp_connection.cpp" />
     <ClCompile Include="src\tcp_server.cpp" />
     <ClCompile Include="src\test.cpp" />
-    <ClCompile Include="src\work_thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Connector.h" />
     <ClInclude Include="src\callbacks.h" />
-    <ClInclude Include="src\handle.h" />
-    <ClInclude Include="src\MemoryPool.h" />
-    <ClInclude Include="src\task.h" />
     <ClInclude Include="src\tcp_callbacks.h" />
     <ClInclude Include="src\tcp_client.h" />
     <ClInclude Include="src\tcp_connection.h" />
     <ClInclude Include="src\tcp_server.h" />
-    <ClInclude Include="src\work_thread_pool.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\maincpp_bak" />
-    <None Include="src\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

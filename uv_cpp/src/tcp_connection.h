@@ -24,7 +24,7 @@ public:
 
 	int ReadStart(uv_stream_t* server);
 	void Accept(uv_stream_t* server, int status);
-	void Connect(uv_connect_t& req,const struct sockaddr* addr);
+	void Connect(uv_connect_t& req,const struct sockaddr* addr, BOOL reconnect_flag = FALSE);
 	void Close(void);
 	int Send(const char* buf, unsigned int nbufs);
 	void SetCloseClientCB(const CloseClientCallback& cb);
@@ -46,6 +46,11 @@ private:
 	static void AfterConnectCB(uv_connect_t* req, int status);
 	void DoAfterConnect(uv_connect_t* req, int status);
 
+	BOOL StartReconnTimer(void);
+	BOOL StopReconnTimer(void);
+	static void AfterTimerReconnCB(uv_timer_t* handle);
+	void DoTimerReconnCB(uv_timer_t* handle);
+
 private:
 	uv_tcp_t connection_handle_;
 	uv_work_t* work_request_;
@@ -53,5 +58,13 @@ private:
 	TcpCallback* callback_handle_;
 	CloseClientCallback close_client_cb_;
 	uv_write_t write_req_;
+	uv_connect_t* conn_req_;
+	struct sockaddr* socket_addr_;
+	uv_timer_t timer_handle_;
+	UINT64 timer_timeout_;
+	UINT64 timer_repeat_;
+	BOOL be_connected_;
+	BOOL reconnect_flag_;
+	BOOL is_reconnecting_;
 };
 #endif //UVCPP_TCP_CONNECTION_H_
