@@ -5,44 +5,43 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="include">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{02541f6e-dbf8-45ad-ab0a-d8f4642282b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\tcp_client.cpp">
+    <ClInclude Include="src\uv_cpp\tcp_callbacks.h">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tcp_connection.cpp">
+    </ClInclude>
+    <ClInclude Include="src\uv_cpp\tcp_client.h">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tcp_server.cpp">
+    </ClInclude>
+    <ClInclude Include="src\uv_cpp\tcp_connection.h">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\test.cpp">
+    </ClInclude>
+    <ClInclude Include="src\uv_cpp\tcp_server.h">
       <Filter>src</Filter>
-    </ClCompile>
+    </ClInclude>
+    <ClInclude Include="src\uv_cpp\global_defines.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\tcp_client.h">
+    <ClCompile Include="src\uv_cpp\tcp_client.cpp">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tcp_connection.h">
+    </ClCompile>
+    <ClCompile Include="src\uv_cpp\tcp_connection.cpp">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tcp_server.h">
+    </ClCompile>
+    <ClCompile Include="src\uv_cpp\tcp_server.cpp">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\callbacks.h">
+    </ClCompile>
+    <ClCompile Include="src\uv_cpp\test.cpp">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tcp_callbacks.h">
-      <Filter>src</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
 </Project>

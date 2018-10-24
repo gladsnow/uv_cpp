@@ -3,7 +3,9 @@
 
 #include "tcp_connection.h"
 
-class TcpCallback
+UVCPP_BEGIN
+
+class LIB_UVCPP_API TcpCallback
 {
 public:
 	TcpCallback(){};
@@ -25,5 +27,6 @@ public:
 	virtual void OnClose(const TcpConnectionPtr& handle) {};
 };
 
+UVCPP_END
 
 #endif	//UVCPP_TCP_CALLBACK_H_

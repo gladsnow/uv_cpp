@@ -18,6 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\uv_cpp\global_defines.h" />
+    <ClInclude Include="src\uv_cpp\tcp_callbacks.h" />
+    <ClInclude Include="src\uv_cpp\tcp_client.h" />
+    <ClInclude Include="src\uv_cpp\tcp_connection.h" />
+    <ClInclude Include="src\uv_cpp\tcp_server.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\uv_cpp\tcp_client.cpp" />
+    <ClCompile Include="src\uv_cpp\tcp_connection.cpp" />
+    <ClCompile Include="src\uv_cpp\tcp_server.cpp" />
+    <ClCompile Include="src\uv_cpp\test.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{076B105A-1173-46E1-8737-D385FCE91DCF}</ProjectGuid>
@@ -101,7 +114,7 @@
       </SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>WIN32;DEBUG;_DEBUG;_WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc\libuv;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc\thirdparty\libuv;inc\thirdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -123,19 +136,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\tcp_client.cpp" />
-    <ClCompile Include="src\tcp_connection.cpp" />
-    <ClCompile Include="src\tcp_server.cpp" />
-    <ClCompile Include="src\test.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\callbacks.h" />
-    <ClInclude Include="src\tcp_callbacks.h" />
-    <ClInclude Include="src\tcp_client.h" />
-    <ClInclude Include="src\tcp_connection.h" />
-    <ClInclude Include="src\tcp_server.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

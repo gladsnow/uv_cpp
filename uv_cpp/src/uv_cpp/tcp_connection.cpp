@@ -1,8 +1,8 @@
 #include <iostream>
 #include "tcp_connection.h"
-#include "MemoryPool.h"
 #include "tcp_callbacks.h"
 
+UVCPP_BEGIN
 TcpConnection::TcpConnection(TcpCallback* callback_handle)
 {
 	connection_handle_.data = this;
@@ -21,10 +21,10 @@ TcpConnection::TcpConnection(TcpCallback* callback_handle)
 
 TcpConnection::~TcpConnection()
 {
-	std::cout << "~TcpConnection()" << std::endl;
+//	std::cout << "~TcpConnection()" << std::endl;
 }
 
-void TcpConnection::Accept(uv_stream_t* server, int status)
+int TcpConnection::Accept(uv_stream_t* server, int status)
 {
 	int ret = -1;
 	ret = uv_accept(server,(uv_stream_t*)&connection_handle_);
@@ -37,7 +37,7 @@ void TcpConnection::Accept(uv_stream_t* server, int status)
 	if (ret < 0)
 	{
 		std::cout << "TcpConnection::Accept()-->>Accept failed." << std::endl;
-		return;
+		return ret;
 	}
 	if (ReadStart((uv_stream_t*)&connection_handle_) < 0)
 	{
@@ -80,7 +80,7 @@ void TcpConnection::ReadCallback(uv_stream_t* stream, ssize_t nread, const uv_bu
 	{
 		ptr_this->DoRead(stream,nread,buf);
 	}
-	std::cout << "ReadCallback....." << std::endl;
+	//std::cout << "ReadCallback....." << std::endl;
 }
 
 void TcpConnection::DoRead(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
@@ -155,7 +155,8 @@ void TcpConnection::Connect(uv_connect_t& req,const struct sockaddr* addr,BOOL r
 	reconnect_flag_ = reconnect_flag;
 	conn_req_ = &req;
 	socket_addr_ = (struct sockaddr*) addr;
-	uv_tcp_connect(&req, &connection_handle_,addr, AfterConnectCB);
+	int ret = uv_tcp_connect(&req, &connection_handle_,addr, AfterConnectCB);
+	std::cout << ret << std::endl;
 }
 
 void TcpConnection::AfterConnectCB(uv_connect_t* req, int status)
@@ -250,3 +251,5 @@ void TcpConnection::DoTimerReconnCB(uv_timer_t* handle)
 		StopReconnTimer();
 	}
 }
+
+UVCPP_END

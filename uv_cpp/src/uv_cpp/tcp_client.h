@@ -5,7 +5,9 @@
 #include "tcp_callbacks.h"
 #include "tcp_connection.h"
 
-class TcpClient
+UVCPP_BEGIN
+
+class LIB_UVCPP_API TcpClient
 {
 public:
 	TcpClient(TcpCallback* tcp_cb);
@@ -15,6 +17,8 @@ public:
 	int InitClient(const char* ip,int port);
 	int StartClient();
 	void StopClient();
+	void SetReconnect(BOOL reconnect_flag);
+
 
 private:
 	static void LoopThread(void* arg);
@@ -26,8 +30,9 @@ private:
 	uv_thread_t thread_id_;
 	uv_tcp_t client_handle_;
 	uv_connect_t connect_req_;
-	struct sockaddr_in addr;
+	struct sockaddr_in addr_;
+	BOOL reconnect_flag_;
 };
 
-
+UVCPP_END
 #endif	//UVCPP_TCP_CLIENT_H_

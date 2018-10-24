@@ -4,26 +4,23 @@
 #include <memory>
 #include <functional>
 #include "uv.h"
-#include "callbacks.h"
+#include "global_defines.h"
 
-typedef struct thread_para
-{
-	uv_stream_t* stream;
-	ssize_t nread;
-	uv_buf_t* buf;
-}thread_para_;
-
+UVCPP_BEGIN
 
 class TcpCallback;
+class TcpConnection;
+typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
+typedef std::function<void(const TcpConnectionPtr&)> CloseClientCallback;
 
-class TcpConnection :public std::enable_shared_from_this<TcpConnection>
+class LIB_UVCPP_API TcpConnection :public std::enable_shared_from_this<TcpConnection>
 {
 public:
 	TcpConnection(TcpCallback* callback_handle);
 	~TcpConnection();
 
 	int ReadStart(uv_stream_t* server);
-	void Accept(uv_stream_t* server, int status);
+	int Accept(uv_stream_t* server, int status);
 	void Connect(uv_connect_t& req,const struct sockaddr* addr, BOOL reconnect_flag = FALSE);
 	void Close(void);
 	int Send(const char* buf, unsigned int nbufs);
@@ -67,4 +64,6 @@ private:
 	BOOL reconnect_flag_;
 	BOOL is_reconnecting_;
 };
+
+UVCPP_END
 #endif //UVCPP_TCP_CONNECTION_H_

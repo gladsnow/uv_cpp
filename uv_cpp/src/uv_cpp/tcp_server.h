@@ -3,10 +3,12 @@
 
 #include<set>
 #include "uv.h"
-#include "tcp_connection.h"
 #include "tcp_callbacks.h"
+#include "tcp_connection.h"
 
-class TcpServer
+UVCPP_BEGIN
+
+class LIB_UVCPP_API TcpServer
 {
 public:
 	TcpServer(TcpCallback* callback_handle);
@@ -32,5 +34,7 @@ private:
 	BOOL is_init_;
 	TcpCallback* tcp_callback_handle_;
 };
+
+UVCPP_END
 
 #endif //UVCPP_TCP_SERVER_H_

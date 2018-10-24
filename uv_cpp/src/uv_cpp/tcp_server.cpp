@@ -4,6 +4,8 @@
 #include "tcp_server.h"
 #include <iostream>
 
+UVCPP_BEGIN
+
 TcpServer::TcpServer(TcpCallback* callback_handle)
 {
 	loop_ = NULL;
@@ -56,13 +58,14 @@ void TcpServer::StopServer(void)
 	{
 		return;
 	}
-
-	//uv_close((uv_handle_t*)&server_handle_,NULL);
-	if(uv_loop_alive(loop_))
+	TcpConnectionSet::iterator iter = connection_handles_set_.begin();
+	for (;iter != connection_handles_set_.end(); iter++)
 	{
-		uv_stop(loop_);
+		(*iter)->Close();
 	}
+	uv_close((uv_handle_t*)&server_handle_,NULL);
 	uv_thread_join(&thread_id_);
+	
 	uv_loop_close(loop_);
 	if(loop_)
 	{
@@ -92,3 +95,5 @@ void  TcpServer::RemoveConnectionHandle(const TcpConnectionPtr& conn)
 	//std::cout << "TcpServer::RemoveConnectionHandle" << std::endl;
 	connection_handles_set_.erase(conn);
 }
+
+UVCPP_END
